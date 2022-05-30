@@ -167,10 +167,23 @@ class _LevelState extends State<Level> {
                                                                 Colors.grey
                                                                     .shade800,
                                                             child:
-                                                                Image.network(
-                                                              value.imageSmall,
-                                                              fit: BoxFit
-                                                                  .fitWidth,
+                                                                GestureDetector(
+                                                              onTap: () async {
+                                                                await showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder: (_) =>
+                                                                        ImageDialog(
+                                                                            path:
+                                                                                value.imageSmall));
+                                                              },
+                                                              child:
+                                                                  Image.network(
+                                                                value
+                                                                    .imageSmall,
+                                                                fit: BoxFit
+                                                                    .fitWidth,
+                                                              ),
                                                             ),
                                                           ),
                                                           label: Expanded(
@@ -194,13 +207,39 @@ class _LevelState extends State<Level> {
                       children: activities
                           .map((e) => Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Image.network(
-                                  e.imageThumbnail,
-                                  fit: BoxFit.fitWidth,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    await showDialog(
+                                        context: context,
+                                        builder: (_) => ImageDialog(
+                                            path: e.imageThumbnail));
+                                  },
+                                  child: Image.network(
+                                    e.imageThumbnail,
+                                    fit: BoxFit.fitWidth,
+                                  ),
                                 ),
                               ))
                           .toList(),
                     ),
     );
+  }
+}
+
+class ImageDialog extends StatelessWidget {
+  final String path;
+
+  const ImageDialog({Key? key, required this.path}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+        child: SizedBox(
+      height: MediaQuery.of(context).size.height * 0.8,
+      child: Image.network(
+        path,
+        fit: BoxFit.fitWidth,
+      ),
+    ));
   }
 }
